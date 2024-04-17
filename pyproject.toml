@@ -1,0 +1,89 @@
+
+
+[project]
+name = "leakproofcmap"
+authors = [
+    {name = "Steven Shave", email = "steven.x.shave@gsk.com"},
+]
+description = "Leak proof splits for training and benchmarking of new and existing L1000 metrics using the CMAP database"
+readme = "README.md"
+requires-python = "==3.10"
+keywords = ["connectivity map", "L1000", "cell line agnostic discovery", "leak proof"]
+license = {text = "Apache-2.0"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    'tqdm>=4.66.1',
+    'torch>=2.1.1',
+    'scikit-learn>=1.4.0',
+    'optuna>=3.6.0',
+    'lightning==2.1.2',
+    'websockets',
+    'phenonaut',
+    'statsmodels>=0.14.0',
+    'tensorboard',
+    'jupyter',
+    'ipykernel',
+    'ipywidgets',
+]
+version = '1.0.3'
+
+[build-system]
+requires = ["setuptools>=60", "black==23.12.1"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 88
+target_version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''
+
+[tool.isort]
+profile = 'black'
+
+[project.scripts]
+leakproofcmap = "leakproofcmap.__main__:run"
+
+[project.optional-dependencies]
+dev = [
+    'pandas==2.2.0',
+    'black==24.3.0',
+    'pytest==8.1.1',
+    'build==1.2.1',
+    'ruff==0.3.5',
+]
+
+[tool.pytest.ini_options]
+minversion = "7.4"
+addopts = "-ra -q"
+testpaths = [
+    "tests/test*.py",
+    "tests/test_models/test*.py",
+]
+
+[tool.setuptools.package-data]
+leakproofcmap = ["resources/lpcmap_cmap_filtered_profiles.tsv", "resources/cmap_split_cellidsplit*_moasplit*.json"]
